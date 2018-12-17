@@ -10,7 +10,7 @@ public class Blockchain {
 		addBlock(100);
 	}
 	
-	private void addBlock(int proof){
+	public Block addBlock(int proof){
 		String hash;
 		if(blockchain.isEmpty()){
 			hash="1";
@@ -20,14 +20,15 @@ public class Blockchain {
 		Block block = new Block(blockchain.size()+1, System.currentTimeMillis(),transactions, proof, hash);
 		transactions = new LinkedList<Transaction>();
 		blockchain.add(block);
+		return block;
 	}
 	
-	private int addTransaction(Client sender, Client recipient, int amount){
+	public int addTransaction(Client sender, Client recipient, int amount){
 		transactions.add(new Transaction(sender, recipient, amount));
 		return blockchain.get(blockchain.size()-1).index;
 	}
 	
-	private String hash(Block block){
+	public String hash(Block block){
 		return Integer.toString(block.hashCode());
 		}
 	
@@ -37,7 +38,7 @@ public class Blockchain {
 			System.out.println(b);
 	}
 	
-	private int proofOfWork(int lastProof){
+	public int proofOfWork(int lastProof){
 		int proof = 0;
 		
 		while (!validProof(lastProof, proof))
@@ -51,5 +52,9 @@ public class Blockchain {
 			return true;
 		else
 			return false;
+	}
+	
+	public Block getLastBlock() {
+		return blockchain.get(blockchain.size()-1);
 	}
 }
